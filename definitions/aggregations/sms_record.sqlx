@@ -1,0 +1,26 @@
+
+
+config {
+    type: "table",
+    description: "Holds the sma_record of each subscriber.",
+    tags: ["sms_record","aggregations"],
+    assertions: {
+        nonNull: ["subscription_id"],
+        
+    }
+}
+
+WITH
+  sms_record AS (
+  SELECT
+    subscription_id,
+    COUNT(network_id) AS total_orders
+  FROM
+        ${ref("stg_sms_record")}
+  GROUP BY
+    subscription_id )
+
+
+select
+    *
+from sms_record

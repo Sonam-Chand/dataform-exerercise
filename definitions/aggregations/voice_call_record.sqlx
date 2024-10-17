@@ -1,0 +1,21 @@
+
+config {
+    type: "table",
+    description: "Holds the voice data records of each subscriber.",
+    tags: ["voice_call_record","aggregations"],
+    assertions: {
+        nonNull: ["subscription_id"],
+        
+    }
+}
+
+with voice_call_record as (
+  select
+    subscription_id,
+    max(actual_duration) as longest_duration_call,
+    min(actual_duration) as shortest_duration_call,
+  from ${ref('stg_voice_call_record') }
+  group by subscription_id
+)
+
+select * from voice_call_record

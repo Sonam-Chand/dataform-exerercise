@@ -1,0 +1,22 @@
+config {
+    type: "view",
+    description: "Holds the mobile data usage of each subscriber.",
+    tags: ["mobile_data","staging"],
+    assertions: {
+        nonNull: ["subscription_id"],
+        
+    }
+}
+with source_data as (
+    select *
+    from
+        ${ref("src_mobile_data_activity")}
+)
+
+select
+    subscription_id,
+    coalesce(safe_cast(uplink_volume as int64),0) as uplink_volume_int,
+    coalesce(safe_cast(downlink_volume as int64),0) as downlink_volume_int,
+    
+from source_data
+ 
