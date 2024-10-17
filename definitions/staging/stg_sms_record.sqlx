@@ -1,0 +1,22 @@
+
+config {
+    type: "view",
+    description: "Holds the sma_record of each subscriber.",
+    tags: ["sms_record","staging"],
+    assertions: {
+        nonNull: ["subscription_id"],
+        
+    }
+}
+
+with source_data as (
+    select *
+    from
+        ${ref("src_sms_record")}
+)
+
+select
+    subscription_id,
+    network_activity_type_cd  as network_id
+from source_data
+

@@ -1,0 +1,17 @@
+config {
+    type: "view",
+    description: "Holds the mobile data usage of each subscriber.",
+    tags: ["mobile_data","source"],
+    assertions: {
+        nonNull: ["subscription_id", "rate_plan_product_id"],
+        
+    }
+}
+
+select *
+        from
+            external_query(
+                "${constants.external_connection.cloud_sql}",
+                "select * from activity.mobile_data_activity;"
+            )
+        limit 1000

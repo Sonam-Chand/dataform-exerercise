@@ -1,0 +1,22 @@
+config {
+    type: "view",
+    description: "Holds the voice_call_record of each subscriber.",
+    tags: ["voice_call_record","staging"],
+    assertions: {
+        nonNull: ["subscription_id"],
+        
+    }
+}
+
+with source_data as (
+    select *
+    from
+        ${ref("src_voice_call_record")}
+)
+
+SELECT
+  subscription_id,
+  actual_duration
+FROM
+  source_data
+

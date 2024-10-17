@@ -1,0 +1,17 @@
+config {
+    type: "view",
+    description: "Holds the voice_call_records of each subscriber.",
+    tags: ["voice_call_record","source"],
+    assertions: {
+        nonNull: ["subscription_id"],
+        
+    }
+}
+
+select *
+        from
+            external_query(
+                "${constants.external_connection.cloud_sql}",
+                "select * from activity.voice_call_record;"
+            )
+        limit 1000
